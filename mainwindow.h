@@ -9,6 +9,7 @@
 #include <QSystemTrayIcon>
 #include <QAction>
 #include <QSettings>
+//#include <QThread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,6 +31,7 @@ private:
     QTimer *timer;
     QRadioButton *rb;
     QString name;
+    //QThread process;
 
     void powerOff();
     void autoRun();
@@ -41,5 +43,6 @@ private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_radioButton_clicked(bool checked);
+    //void backProcess();
 };
 #endif // MAINWINDOW_H

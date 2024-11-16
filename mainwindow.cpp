@@ -8,9 +8,11 @@
 #include<QDir>
 #include<QSettings>
 #include<QRadioButton>
+//#include <QThread>
 
 QTime timeSet;
 QString TimeEditStr;
+//SmartComputerSwitch w;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,9 +22,22 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     ui->timeLabel->setText(QTime::currentTime().toString("hh:mm:ss"));
+
+    /*
+     * Фоновое управление через поток
+     * moveToThread(&process);
+    connect(&process, &QThread::started, &w, MainWindow::backProcess);
+    connect(&process, &QThread::finished, &w, QObject::deleteLater);
+
+    process.start();
+
+    connect(&w, &QMainWindow::destroyed, [&]() {
+       process.quit();
+       process.wait();
+    });*/
+
     timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(slotTimer()));
-    slotTimer();
     timer->start(1000);
     setSettings();
 }
@@ -56,7 +71,7 @@ void MainWindow::powerOff()
 
 void MainWindow::autoRun()
 {
-     name = "SmartComputerSwitch";
+    name = "SmartComputerSwitch";
 #ifdef Q_OS_WIN32
     QSettings settings("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
     settings.setValue(name, QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
@@ -98,7 +113,6 @@ void MainWindow::slotTimer() {
        //powerOff();
     }
 
-
 }
 
 
@@ -129,5 +143,12 @@ void MainWindow::on_radioButton_clicked(bool checked)
 
 }
 
+/*void MainWindow::backProcess()
+{
+    while(true) {
+        slotTimer();
+    }
+}
+*/
 
 
